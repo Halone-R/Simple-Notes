@@ -12,13 +12,12 @@
 <script>
 // @ is an alias to /src
 import HeaderComp from '@/components/HeaderComp.vue'
-import NavComp from '@/components/NavComp.vue'
 import FooterComp from '@/components/FooterComp.vue'
 import SectionComp from '@/components/SectionComp.vue'
 
 export default {
   name: 'HomePage',
-  components: {HeaderComp, NavComp, SectionComp, FooterComp}
+  components: {HeaderComp, SectionComp, FooterComp}
 }
 
 </script>
