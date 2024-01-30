@@ -1,0 +1,262 @@
+<template>
+  <HeaderComp/>
+  <div class="ourTeam">
+
+<!--About Us-->
+
+<h2>About Us</h2>
+<div class="infoContainer">
+  <div class="websiteInfo">
+    <p>It is a website created with the aim of helping people manage their time better.</p>
+  </div>
+</div>
+
+<!--Project Member-->
+
+<h2>Our Team</h2>
+<div class="teamMembers">
+  <div v-for="(member, index) in teamMembers" :key="index" class="member">
+    <div class="memberInfo">
+      <img class="memberPicture" :src="member.image" />
+      <div class="memberDetails">
+        <h3>{{ member.name }}</h3>
+        <p class="memberRole">{{ member.role }}</p>
+        <p class="memberInfoBox">{{ member.info }}</p>
+      </div>
+    </div>
+    <div class="socialLinks">
+      <a v-if="member.socialNetworkLink" :href="member.socialNetworkLink" :class="member.socialNetworkClass" target="_blank">
+        <i :class="member.socialNetworkIcon"></i>
+      </a>
+      <a :href="member.githubLink" class="githubLink" target="_blank">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+  </div>
+</div>
+</div>
+
+<FooterComp/>
+</template>
+
+<script>
+// @ is an alias to /src
+import HeaderComp from '@/components/HeaderComp.vue'
+import FooterComp from '@/components/FooterComp.vue'
+
+export default {
+  name: 'AboutUsPage',
+  components: {
+    HeaderComp,
+    FooterComp
+    
+  },
+
+
+  created(){
+      window.scrollTo(0, 0);
+    },
+
+    // Team Members Data
+    data() {
+      return {
+        teamMembers: [
+          {
+            name: "Rajiv Chaves",
+            role: "Project Owner",
+            socialNetwork: "linkedin",
+            socialNetworkLink: "https://www.linkedin.com/in/rajiv-chaves-3733ba274/",
+            githubLink: "https://github.com/Halone-R",
+            info: "Sou um pessoa sociavel que apaixonada por tecnologia, gosta de desporto e focado em seus objetivos.",
+            image: "src/assets/Rajiv.png",
+            socialNetworkIcon: "fa fa-linkedin ",
+            socialNetworkClass: "linkedinLink",
+          },
+        ],
+      };
+    }
+  };
+
+</script>
+<style>
+/*Our Team*/
+
+.infoContainer{
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 10px;
+    margin-bottom: 30px;
+}
+
+.websiteInfo{
+    background-color: rgb(58, 56, 53);
+    opacity: 0.9;
+    width: 98%;
+    font-size: 20px;
+    padding: 10px;
+    border: 2px solid white;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 20px 15px 5px rgba(109, 106, 106, 0.8);
+}
+
+.ourTeam{
+    text-align: center;
+    font-size: 30px;
+    color: white;
+    padding-bottom: 40px;
+}
+
+.ourTeam h2{
+    color: rgb(58, 56, 53);;
+}
+
+.teamMembers{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    padding-top: 20px;
+    margin-bottom: 20px;
+}
+
+/*Each Member Card*/
+
+.member{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: rgb(58, 56, 53);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    width: 280px;
+    height: auto;
+    border: 2px solid white;
+    box-shadow: 20px 15px 5px rgba(109, 106, 106, 0.8);
+}
+
+.memberInfo{
+    text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.memberPicture{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-top: -5px;
+    transition: 1s;
+  }
+
+.memberPicture:hover{
+    transform: scale(1.05);
+    transition: 1s;
+}
+
+.memberDetails{
+    text-align: center;
+    flex-grow: 1;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.member h3{
+    margin-top: 3px;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.member p{
+    margin-top: 5px;
+    font-size: 14px;
+    color: #ffffff;
+}
+
+.memberRole{
+    font-weight: bold;
+    font-size: 15px !important;
+    margin-top: 30px !important;
+    color: rgb(247, 218, 191) !important;
+}
+
+.memberInfoBox{
+    margin-top: 30px !important;
+    line-height: 1.5;
+}
+
+.socialLinks{
+    display: flex;
+    margin-top: -20px;
+    gap: 20px;
+}
+
+.socialLinks a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 20px;
+}
+
+.socialLinks a:hover{
+    background-color: rgb(132, 115, 100);
+}
+
+.socialLinks .linkedinLink{
+    background-color: rgb(0, 119, 181);
+    border: 1px solid white;
+}
+
+.socialLinks .githubLink{
+    background-color: rgb(59, 59, 59);
+    border: 1px solid white;
+}
+
+/*Responsive*/
+
+@media screen and (max-width: 980px){
+  .websiteInfo{
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+  }
+}
+
+@media screen and (max-width: 800px){
+  .teamMembers{
+      flex-direction: column;
+      align-items: center;
+      gap: 50px;
+  }
+}
+
+@media screen and (max-width: 480px){
+  .ourTeam h2{
+      font-size: 24px;
+  }
+
+
+  .member{
+      width: 100%;
+      max-width: 280px;
+  }
+
+  .memberPicture{
+      width: 150px;
+      height: 150px;
+  }
+}
+  
+</style>
