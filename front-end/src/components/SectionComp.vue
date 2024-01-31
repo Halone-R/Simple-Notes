@@ -1,95 +1,87 @@
 <template>
     <section>
-        <div class="container">
-
+      <div class="container">
           <div class="left-box">
             <nav>
-              <a onclick="tab(0)" class="tab active"><i class="material-symbols-outlined">calendar_today</i><span>Today</span></a>
-              <a onclick="tab(1)" class="tab"><i class="material-symbols-outlined">calendar_month</i><span>Scheduled</span></a>
-              <a onclick="tab(2)" class="tab"><i class="material-symbols-outlined">star</i><span>Important</span></a>
-              <a onclick="tab(3)" class="tab"><i class="material-symbols-outlined">person</i><span>Assigned to me</span></a>
-              <a onclick="tab(4)" class="tab"><i class="material-symbols-outlined">inbox</i><span>All</span></a>
-              <a onclick="tab(5)" class="tab"><i class="material-symbols-outlined">check_circle</i><span>Concluded</span></a>                        
+              <a @click="activateTab(0)" :class="{ 'tab': true, 'active': activeTab === 0 }"><i class="material-symbols-outlined">calendar_today</i><span>Today</span></a>
+              <a @click="activateTab(1)" :class="{ 'tab': true, 'active': activeTab === 1 }"><i class="material-symbols-outlined">calendar_month</i><span>Scheduled</span></a>
+              <a @click="activateTab(2)" :class="{ 'tab': true, 'active': activeTab === 2 }"><i class="material-symbols-outlined">star</i><span>Important</span></a>
+              <a @click="activateTab(3)" :class="{ 'tab': true, 'active': activeTab === 3 }"><i class="material-symbols-outlined">person</i><span>Assigned to me</span></a>
+              <a @click="activateTab(4)" :class="{ 'tab': true, 'active': activeTab === 4 }"><i class="material-symbols-outlined">inbox</i><span>All</span></a>
+              <a @click="activateTab(5)" :class="{ 'tab': true, 'active': activeTab === 5 }"><i class="material-symbols-outlined">check_circle</i><span>Concluded</span></a>
             </nav>
           </div>
 
           <div class="right-box">
-                <!--  Tab 1 -->
-              <div class="today tab-content">
-
-                <div class="title">
+          <!-- Tab 1: Today -->
+          <div v-show="activeTab === 0" class="today tab-content">
+              <div class="title">
                   <i class="material-symbols-outlined">calendar_today</i>
                   <h1>Today</h1>
-                </div>
-
-                <div class="box-add-note">
-                  <input type="text" placeholder="Adicionar uma tarefa">
+              </div>
+              <div class="box-add-note">
+                  <input type="text" placeholder="Adicionar uma tarefa" v-model="newNoteText">
                   <a href="#" class="material-symbols-outlined">calendar_month</a>
                   <a href="#" class="material-symbols-outlined">notifications</a>
                   <a href="#" class="material-symbols-outlined">repeat</a>
-                  <button>Adicionar</button>
-                </div>
-
-                <div class="note">
-                  <input type="checkbox">
-                  <span>Lista de compras</span>
-                  <a href="#" class="material-symbols-outlined">star</a>
-                </div>
-            
+                  <button @click="addNote">Adicionar</button>
               </div>
-          
+              <!-- Notas -->
+              <div class="note" v-for="(note, index) in todayNotes" :key="index">
+                  <input type="checkbox" v-model="note.isChecked">
+                  <span>{{ note.text }}</span>
+                  <a href="#" class="material-symbols-outlined" @click.prevent="toggleStarred(note)">{{ note.isStarred ? 'star' : 'star_outline' }}</a>
+                  <button @click="removeNoteToday(index)">Excluir</button>
+              </div>
+          </div>
 
-          <!--  Tab 2 -->
-          <div class="month tab-content">
+          <!-- Tab 2: Scheduled -->
+          <div v-show="activeTab === 1" class="month tab-content">
+              <div class="title">
+                  <i class="material-symbols-outlined">calendar_month</i>
+                  <h1>Scheduled</h1>
+              </div>
+              <div class="box-add-note">
+                  <input type="text" placeholder="Adicionar uma tarefa" v-model="newScheduledNoteText">
+                  <a href="#" class="material-symbols-outlined">calendar_month</a>
+                  <a href="#" class="material-symbols-outlined">notifications</a>
+                  <a href="#" class="material-symbols-outlined">repeat</a>
+                  <button @click="addScheduledNote">Adicionar</button>
+              </div>
+              <!-- Notas -->
+              <div class="note" v-for="(note, index) in scheduledNotes" :key="index">
+                  <input type="checkbox" v-model="note.isChecked">
+                  <span>{{ note.text }}</span>
+                  <a href="#" class="material-symbols-outlined" @click.prevent="toggleStarred(note)">{{ note.isStarred ? 'star' : 'star_outline' }}</a>
+                  <button @click="removeScheduledNote(index)">Excluir</button>
+              </div>
+          </div>
 
-            <div class="title">
-              <i class="material-symbols-outlined">calendar_month</i>
-              <h1>Scheduled</h1>
-            </div>
 
-            <div class="box-add-note">
-              <input type="text" placeholder="Adicionar uma tarefa">
-              <a href="#" class="material-symbols-outlined">calendar_month</a>
-              <a href="#" class="material-symbols-outlined">notifications</a>
-              <a href="#" class="material-symbols-outlined">repeat</a>
-              <button>Adicionar</button>
-            </div>
-
-            <div class="note">
-              <input type="checkbox">
-              <span>Lista de compras</span>
-              <a href="#" class="material-symbols-outlined">star</a>
-            </div>
-
-            </div>
-        
-
-          <!--  Tab 3 -->
-          <div class="important tab-content">
-
-            <div class="title">
-              <i class="material-symbols-outlined">star</i>
-              <h1>Important</h1>
-            </div>
-
-            <div class="box-add-note">
-              <input type="text" placeholder="Adicionar uma tarefa">
-              <a href="#" class="material-symbols-outlined">calendar_month</a>
-              <a href="#" class="material-symbols-outlined">notifications</a>
-              <a href="#" class="material-symbols-outlined">repeat</a>
-              <button>Adicionar</button>
-            </div>
-
-            <div class="note">
-              <input type="checkbox">
-              <span>Lista de compras</span>
-              <a href="#" class="material-symbols-outlined">star</a>
-            </div>
-
-            </div>
+          <!-- Tab 3 -->
+          <div v-show="activeTab === 2" class="important tab-content">
+              <div class="title">
+                  <i class="material-symbols-outlined">star</i>
+                  <h1>Important</h1>
+              </div>
+              <div class="box-add-note">
+                  <input type="text" placeholder="Adicionar uma tarefa" v-model="newImportantNoteText">
+                  <a href="#" class="material-symbols-outlined">calendar_month</a>
+                  <a href="#" class="material-symbols-outlined">notifications</a>
+                  <a href="#" class="material-symbols-outlined">repeat</a>
+                  <button @click="addImportantNote">Adicionar</button>
+              </div>
+              <!-- Notas -->
+              <div class="note" v-for="(note, index) in importantNotes" :key="index">
+                  <input type="checkbox" v-model="note.isChecked">
+                  <span>{{ note.text }}</span>
+                  <a href="#" class="material-symbols-outlined" @click.prevent="toggleStarred(note)">{{ note.isStarred ? 'star' : 'star_outline' }}</a>
+                  <button @click="removeNoteFromImportant(index)">Excluir</button>
+              </div>
+          </div>
 
           <!--  Tab 4 -->
-          <div class="assigned tab-content">
+          <div  v-show="activeTab === 3" class="assigned tab-content">
 
             <div class="title">
               <i class="material-symbols-outlined">person</i>
@@ -104,25 +96,23 @@
 
           </div>
 
-          <!--  Tab 5 -->
-          <div class="all tab-content">
-
-            <div class="title">
-              <i class="material-symbols-outlined">inbox</i>
-              <h1>All</h1>
-            </div>
-
-            <div class="note">
-              <input type="checkbox">
-              <span>Lista de compras</span>
-              <a href="#" class="material-symbols-outlined">star</a>
-            </div>
-
-            </div>
-
+          <!-- Tab 5 -->
+          <div v-show="activeTab === 4" class="all tab-content">
+              <div class="title">
+                  <i class="material-symbols-outlined">inbox</i>
+                  <h1>All</h1>
+              </div>
+              <!-- Notas -->
+              <div class="note" v-for="(note, index) in notes" :key="index">
+                  <input type="checkbox" v-model="note.isChecked">
+                  <span>{{ note.text }}</span>
+                  <a href="#" class="material-symbols-outlined" @click.prevent="toggleStarred(note)">{{ note.isStarred ? 'star' : 'star_outline' }}</a>
+                  <button @click="removeNoteFromAll(index)">Excluir</button>
+              </div>
+          </div>
 
           <!--  Tab 6 -->
-          <div class="concluded tab-content">
+          <div  v-show="activeTab === 5" class="concluded tab-content">
 
             <div class="title">
               <i class="material-symbols-outlined">person</i>
@@ -143,8 +133,119 @@
 </template>
 <script>
 export default {
+  data() {
+    return {
+      activeTab: 0,
+      isChecked: false,
+      notes: [],
+      newNoteText: '',
+      newScheduledNoteText: '',
+      importantNotes: []
+    };
+  },
 
-}
+  computed: {
+    todayNotes() {
+      return this.notes.filter(note => !note.isScheduled);
+    },
+    scheduledNotes() {
+      return this.notes.filter(note => note.isScheduled);
+    }
+  },
+
+  methods: {
+    activateTab(index) {
+      this.activeTab = index;
+    },
+    addNote() {
+      if (this.newNoteText.trim() !== '') {
+          this.notes.push({
+          text: this.newNoteText,
+          isChecked: false,
+          isStarred: false,
+          isScheduled: false
+
+        });
+        this.newNoteText = '';
+      }
+    },
+    addScheduledNote() {
+      if (this.newScheduledNoteText.trim() !== '') {
+        this.notes.push({
+          text: this.newScheduledNoteText,
+          isChecked: false,
+          isStarred: false,
+          isScheduled: true
+        });
+        this.newScheduledNoteText = '';
+      }
+    },
+
+    addImportantNote() {
+      if (this.newImportantNoteText.trim() !== '') {
+        const newImportantNote = {
+          text: this.newImportantNoteText,
+          isChecked: false,
+          isStarred: true, // Marcar como importante
+          isScheduled: false
+        };
+        this.notes.push(newImportantNote);
+        this.newImportantNoteText = '';
+        
+
+        // Adicionar a nota diretamente à lista importantNotes
+        this.importantNotes.push(newImportantNote);
+      }
+    },
+    removeNoteToday(index) {
+      const noteToRemove = this.todayNotes[index];
+      const indexInNotes = this.notes.indexOf(noteToRemove);
+      if (indexInNotes !== -1) {
+        this.notes.splice(indexInNotes, 1);
+      }
+    },
+
+    removeScheduledNote(index) {
+      const note = this.scheduledNotes[index];
+      const indexInImportantNotes = this.importantNotes.indexOf(note);
+      if (indexInImportantNotes !== -1) {
+        this.importantNotes.splice(indexInImportantNotes, 1);
+      }
+      this.notes.splice(this.notes.indexOf(note), 1);
+    },
+
+    removeNoteFromImportant(index) {
+      const note = this.importantNotes[index];
+      const indexInNotes = this.notes.indexOf(note);
+      if (indexInNotes !== -1) {
+        this.notes.splice(indexInNotes, 1);
+      }
+      this.importantNotes.splice(index, 1);
+    },
+
+    removeNoteFromAll(index) {
+      this.notes.splice(index, 1);
+    },
+
+
+
+    toggleStarred(note) {
+      note.isStarred = !note.isStarred;
+
+      if (note.isStarred && !this.importantNotes.includes(note)) {
+        this.importantNotes.push(note);
+      } else if (!note.isStarred) {
+        const indexInImportantNotes = this.importantNotes.indexOf(note);
+        if (indexInImportantNotes !== -1) {
+          this.importantNotes.splice(indexInImportantNotes, 1);
+        }
+      }
+    },
+  }
+};
+
+
+
 </script>
 <style scoped>
 section{
@@ -255,7 +356,7 @@ button{
   cursor: pointer;
   margin-top: 10px;
   margin-left: 500px;
-
 }
+
 
 </style>
